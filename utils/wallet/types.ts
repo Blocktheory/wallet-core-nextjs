@@ -1,7 +1,3 @@
-export enum TRANSACTION_TYPE {
-  SEND = 'SEND',
-}
-
 export type TTranx = {
   chainId: string;
   chainIdHex?: string;
@@ -17,14 +13,11 @@ export type TTranx = {
   contractDecimals: number;
   nonce: number;
   nonceHex?: string;
-  toAddress?: string;
+  toAddress: string;
   fromAddress: string;
-  coinType: string;
-  type: string;
   symbol?: string;
   blockchain?: string;
   isNative?: boolean;
-  transactionType: TRANSACTION_TYPE.SEND;
   data?: string;
   denom?: string;
   blockHash?: string;
@@ -36,9 +29,9 @@ export type TTranx = {
   accountNumber?: number;
   sequence?: number;
   dataList?: Array<string>;
-  v?: '0x01'; 
-  r?: '0x00';
-  s?: '0x00';
+  v?: "0x01";
+  r?: "0x00";
+  s?: "0x00";
   path?: string;
   hardwareType?: string;
   txBuff?: Buffer;

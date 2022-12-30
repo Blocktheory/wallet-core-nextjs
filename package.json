@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "mkdir -pv public && cp node_modules/@trustwallet/wallet-core/dist/lib/wallet-core.* public"
   },
   "dependencies": {
     "@next/font": "13.1.1",
@@ -24,5 +25,10 @@
     "react-dom": "18.2.0",
     "typescript": "4.9.4",
     "web3-utils": "^1.8.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.20",
+    "tailwindcss": "^3.2.4"
   }
 }

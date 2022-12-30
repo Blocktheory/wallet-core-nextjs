@@ -1,27 +1,35 @@
 import { TTranx } from "./types";
-import * as bs58 from 'bs58';
-import Long from 'long';
-
-const { TW, WalletCore } = window;
-
-export class FRTWallet {
-  account: any;
-  CoinType: typeof WalletCore.CoinType;
-  HexCoding: typeof WalletCore.HexCoding;
-  AnySigner: typeof WalletCore.AnySigner;
-  HDWallet: typeof WalletCore.HDWallet;
-  PublicKey: typeof WalletCore.PublicKey;
-  AnyAddress: typeof WalletCore.AnyAddress;
-  PrivateKey: typeof WalletCore.PrivateKey;
-  Mnemonic: typeof WalletCore.Mnemonic;
-  Curve: typeof WalletCore.Curve;
+import * as bs58 from "bs58";
+import Long from "long";
+import { TW, WalletCore } from "@trustwallet/wallet-core";
+export class Wallet {
+  CoinType: WalletCore["CoinType"];
+  HexCoding: WalletCore["HexCoding"];
+  AnySigner: WalletCore["AnySigner"];
+  HDWallet: WalletCore["HDWallet"];
+  PublicKey: WalletCore["PublicKey"];
+  AnyAddress: WalletCore["AnyAddress"];
+  PrivateKey: WalletCore["PrivateKey"];
+  Mnemonic: WalletCore["Mnemonic"];
+  Curve: WalletCore["Curve"];
   TW: typeof TW;
-  SolanaAddress: typeof WalletCore.SolanaAddress;
-  StoredKey: typeof WalletCore.StoredKey;
+  SolanaAddress: WalletCore["SolanaAddress"];
+  StoredKey: WalletCore["StoredKey"];
 
-  constructor(_walletCore = WalletCore, _tw = TW) {
-    const { HDWallet, CoinType, AnySigner, HexCoding, PublicKey, PrivateKey, Mnemonic, Curve, AnyAddress, SolanaAddress, StoredKey } = _walletCore;
-    this.account = HDWallet;
+  constructor(_walletCore: WalletCore, _tw = TW) {
+    const {
+      HDWallet,
+      CoinType,
+      AnySigner,
+      HexCoding,
+      PublicKey,
+      PrivateKey,
+      Mnemonic,
+      Curve,
+      AnyAddress,
+      SolanaAddress,
+      StoredKey,
+    } = _walletCore;
     this.CoinType = CoinType;
     this.AnySigner = AnySigner;
     this.HexCoding = HexCoding;
@@ -37,10 +45,12 @@ export class FRTWallet {
   }
 
   signNearTx = async (tx: TTranx, prvKey: string) => {
-    const keypair = this.PrivateKey.createWithData(this.HexCoding.decode(prvKey));    
+    const keypair = this.PrivateKey.createWithData(
+      this.HexCoding.decode(prvKey)
+    );
     const txDataInput = TW.NEAR.Proto.SigningInput.create({
       nonce: Long.fromString(tx.nonce.toString()),
-      blockHash: bs58.decodeUnsafe(tx.blockHash ?? ''),
+      blockHash: bs58.decodeUnsafe(tx.blockHash ?? ""),
       signerId: tx.fromAddress,
       receiverId: tx.toAddress,
       actions: [
@@ -55,15 +65,17 @@ export class FRTWallet {
     const output = TW.NEAR.Proto.SigningInput.encode(txDataInput).finish();
     const outputData = this.AnySigner.sign(output, this.CoinType.near);
     const NearSigningOutput = TW.NEAR.Proto.SigningOutput.decode(outputData);
-    const txHash = Buffer.from(NearSigningOutput.signedTransaction).toString("base64");
+    const txHash = Buffer.from(NearSigningOutput.signedTransaction).toString(
+      "base64"
+    );
     return txHash;
   };
 }
 
 export function toBufferBE(num: bigint, width: number): Buffer {
   const hex = num.toString(16);
-  const buf = Buffer.from(hex.padStart(width * 2, '0'), 'hex');
-  if (buf.length != width) throw Error('int too big');
+  const buf = Buffer.from(hex.padStart(width * 2, "0"), "hex");
+  if (buf.length != width) throw Error("int too big");
   return buf;
 }
 
