@@ -45,9 +45,7 @@ export class Wallet {
   }
 
   signNearTx = async (tx: TTranx, prvKey: string) => {
-    const keypair = this.PrivateKey.createWithData(
-      this.HexCoding.decode(prvKey)
-    );
+    const keypair = this.PrivateKey.createWithData(Buffer.from(prvKey));
     const txDataInput = TW.NEAR.Proto.SigningInput.create({
       nonce: Long.fromString(tx.nonce.toString()),
       blockHash: bs58.decodeUnsafe(tx.blockHash ?? ""),

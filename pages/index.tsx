@@ -29,12 +29,10 @@ export default function Home() {
   const [hash, setHash] = useState("");
 
   const signNearTrust = async () => {
-    const walletCore = initWasm().then((wallet) => {
-      return wallet;
-    });
-    // const wallet = new Wallet(walletCore);
-    // const txHash = await wallet.signNearTx(txData, prvKey);
-    // console.log("txHas", txHash);
+    const walletCore = await initWasm();
+    const wallet = new Wallet(walletCore);
+    const txHash = await wallet.signNearTx(txData, prvKey);
+    console.log("txHas", txHash);
   };
 
   const signNearAPIJs = async () => {
