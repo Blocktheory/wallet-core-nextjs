@@ -1,10 +1,8 @@
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { TTranx } from "../utils/wallet/types";
 import { initWasm } from "@trustwallet/wallet-core";
 import { Wallet } from "../utils/wallet";
-import { signNearRaw } from "../utils/near";
 import { useState } from "react";
 export default function Home() {
   const txData: TTranx = {
@@ -25,19 +23,13 @@ export default function Home() {
   };
 
   const prvKey =
-    "5yutZ7z1NUFmUbqBdFuAgWbqdXzpY1wZB7cnau4s9L4gzSFhMKb68XkJiY5yEVJSge3D3ib1bZGyrwnTj17bVvGg";
+    process.env.NEXT_PRV_KEY ?? "";
   const [hash, setHash] = useState("");
 
-  const signNearTrust = async () => {
+  const signTx = async () => {
     const walletCore = await initWasm();
     const wallet = new Wallet(walletCore);
     const txHash = await wallet.signNearTx(txData, prvKey);
-    console.log("txHas", txHash);
-  };
-
-  const signNearAPIJs = async () => {
-    const txHash = await signNearRaw(txData, prvKey);
-    console.log("txHas", txHash);
     setHash(txHash);
   };
 
@@ -52,32 +44,14 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.center}>
           <div className="relative w-80 flex flex-col">
-            <Image
-              className={styles.logo}
-              src="/next.svg"
-              alt="Next.js Logo"
-              width={180}
-              height={37}
-              priority
-            />
             <button
               onClick={() => {
-                signNearTrust();
+                signTx();
               }}
               className="mt-10 border border-black p-2 rounded-lg"
             >
               <span id="show-more" className="dark:text-white ">
-                {"Sign near tx with Wallet Core"}
-              </span>
-            </button>
-            <button
-              onClick={async () => {
-                await signNearAPIJs();
-              }}
-              className="mt-10 border border-black p-2 rounded-lg"
-            >
-              <span id="show-more" className="dark:text-white ">
-                {"Sign near tx with near-api-js"}
+                {"Sign Near"}
               </span>
             </button>
             <p className="text-center break-all mt-5">{hash && hash}</p>

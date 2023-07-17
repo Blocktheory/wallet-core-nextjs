@@ -36,3 +36,15 @@ export type TTranx = {
   hardwareType?: string;
   txBuff?: Buffer;
 };
+
+export enum TRANSACTION_TYPE {
+  SEND = 'SEND',
+  SWAP = 'SWAP',
+  APPROVAL = 'APPROVAL',
+  BRIDGE = 'BRIDGE',
+  STAKE = 'STAKE',
+  UNSTAKE = 'UNSTAKE',
+  RESTAKE = 'RESTAKE',
+  WITHDRAW = 'WITHDRAW',
+  IBC = 'IBC',
+}
