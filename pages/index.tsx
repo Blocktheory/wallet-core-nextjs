@@ -1,6 +1,6 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { TTranx } from "../utils/wallet/types";
+import { TRANSACTION_TYPE, TTranx } from "../utils/wallet/types";
 import { initWasm } from "@trustwallet/wallet-core";
 import { Wallet } from "../utils/wallet";
 import { useState } from "react";
@@ -20,6 +20,7 @@ export default function Home() {
     amountValue: 25000000000000002097152,
     gasLimit: 0,
     gasPrice: 0,
+    transactionType: TRANSACTION_TYPE.SEND
   };
 
   const prvKey =
